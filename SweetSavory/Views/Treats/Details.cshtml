@@ -4,26 +4,21 @@
   Layout = "_Layout";
 }
 
-<h2>Treat Details</h2>
+<h1>@Html.DisplayFor(model => model.Name)</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>@Html.ActionLink("Edit Treat", "Edit", new { id = Model.TreatId })</p>
+}
 <hr />
-<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
-<p>@Html.DisplayNameFor(model => model.Price): $@Html.DisplayFor(model => model.Price)</p>
+<h4>@Html.DisplayNameFor(model => model.Price): $@Html.DisplayFor(model => model.Price)</h4>
 
 <h4>Flavors: </h4>
 <ul>
-@foreach (var join in Model.Flavors)
-{
-    <li>@join.Flavor.Name</li>
-
-    @using (Html.BeginForm("DeleteFlavor", "Treats"))
+    @foreach (var join in Model.Flavors)
     {
-        @Html.Hidden("joinId", @join.FlavorTreatId)
-        <input type="submit" value="Remove"/>
+        <li>@join.Flavor.Name</li>
     }
-}
 </ul>
 
-<p>@Html.ActionLink("Back", "Index")</p>
-<p>@Html.ActionLink("Edit Treat", "Edit", new { id = Model.TreatId })</p>
-<p>@Html.ActionLink("Delete Treat", "Delete", new { id = Model.TreatId })</p>
-<a class="btn btn-outline-info" href="/">Home</a>  
+<p>@Html.ActionLink("← Back to Treats", "Index")</p>
+<p>@Html.ActionLink("◄ Home", "Index")</p>
