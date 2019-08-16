@@ -4,7 +4,23 @@
 
 <h1>Pierre's Sweet and Savory Treats</h1>
 
-<a class="btn btn-outline-success" href="/Treats">View All Treats</a>
-<a class="btn btn-outline-warning" href="/Flavors">View by Flavor</a>
-
-<a class="btn btn-outline-info" href="/Account/Login">Log In</a>
+@if (User.Identity.IsAuthenticated)
+{
+    <h5>Hello <i>@User.Identity.Name</i>!</h5>
+    <a class="btn btn-outline-success" href="/Treats">View All Treats</a>
+    <a class="btn btn-outline-warning" href="/Flavors">Available Flavors</a>
+    <hr>
+    @using (Html.BeginForm("LogOff", "Account"))
+    {
+        <input type="submit" class="btn btn-outline-secondary" value="Log Out"/>
+        <a class="btn btn-outline-info" href="/">Home</a>  
+    }
+}
+else
+{
+    <a class="btn btn-outline-success" href="/Treats">View All Treats</a>
+    <a class="btn btn-outline-warning" href="/Flavors">Available Flavors</a>
+    <hr>
+    <a class="btn btn-outline-info" href="/Account/Login">Log In</a>
+    <a class="btn btn-outline-info" href="/Account/Register">Register</a>
+}
