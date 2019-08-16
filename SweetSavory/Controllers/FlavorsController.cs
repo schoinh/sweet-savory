@@ -26,7 +26,9 @@ namespace SweetSavory.Controllers
 
         public ActionResult Index()
         {
-            return View(_db.Flavors.ToList());
+            return View(_db.Flavors
+                .OrderBy(flavors => flavors.Name)
+                .ToList());
         }
 
         [Authorize]
@@ -57,21 +59,11 @@ namespace SweetSavory.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
             var thisFlavor = _db.Flavors
-                .Where(r => r.User.Id == currentUser.Id)
                 .FirstOrDefault(flavors => flavors.FlavorId == id);
-            if (thisFlavor != null)
-            {
-                return View(thisFlavor);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(thisFlavor);
         }
 
         [Authorize]
@@ -84,21 +76,11 @@ namespace SweetSavory.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
             var thisFlavor = _db.Flavors
-                .Where(r => r.User.Id == currentUser.Id)
                 .FirstOrDefault(flavors => flavors.FlavorId == id);
-            if (thisFlavor != null)
-            {
-                return View(thisFlavor);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(thisFlavor);
         }
 
         [Authorize]

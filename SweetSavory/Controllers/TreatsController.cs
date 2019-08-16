@@ -107,21 +107,11 @@ namespace SweetSavory.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
             var thisTreat = _db.Treats
-                .Where(r => r.User.Id == currentUser.Id)
                 .FirstOrDefault(treats => treats.TreatId == id);
-            if (thisTreat != null)
-            {
-                return View(thisTreat);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(thisTreat);
         }
 
         [Authorize]
