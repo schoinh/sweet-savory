@@ -4,13 +4,11 @@
     Layout = "_Layout";
 }
 
-<h2>Are you sure you want to delete this treat?</h2>
-@Html.DisplayFor(model => model.Name)
-
+<h2>Are you sure you want to delete <i>@Model.Name?</i></h2>
+<hr>
 @using (Html.BeginForm())
 {
-    <input type="submit" value="Delete" />
+    <input type="submit" class="btn btn-danger" value="Yes, Delete" />
 }
-
-@Html.ActionLink("Cancel", "Index")
-<a class="btn btn-outline-info" href="/">Home</a>  
+<br>
+@Html.ActionLink("Cancel", "Edit", new { id = Model.TreatId })
