@@ -13,12 +13,19 @@
 <h4>@Html.DisplayNameFor(model => model.Price): $@Html.DisplayFor(model => model.Price)</h4>
 
 <h4>Flavors: </h4>
-<ul>
-    @foreach (var join in Model.Flavors)
-    {
-        <li>@join.Flavor.Name</li>
-    }
-</ul>
+@if (Model.Flavors.Any())
+{
+    <ul>
+        @foreach (var join in Model.Flavors)
+        {
+            <li>@join.Flavor.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>This treat doesn't have any associated flavors!</p>
+}
 
 <p>@Html.ActionLink("← Back to Treats", "Index")</p>
-<p>@Html.ActionLink("◄ Home", "Index")</p>
+<p>@Html.ActionLink("◄ Home", "Index", "Home")</p>
