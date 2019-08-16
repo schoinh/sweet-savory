@@ -26,7 +26,9 @@ namespace SweetSavory.Controllers
 
         public ActionResult Index()
         {
-            return View(_db.Treats.ToList());
+            return View(_db.Treats
+                .OrderBy(treats => treats.Name)
+                .ToList());
         }
 
         [Authorize]
@@ -62,27 +64,28 @@ namespace SweetSavory.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
             ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name");
             var thisTreat = _db.Treats
-                .Where(r => r.User.Id == currentUser.Id)
+                .Include(treat => treat.Flavors)
+                .ThenInclude(join => join.Flavor)
                 .FirstOrDefault(treats => treats.TreatId == id);
-            if (thisTreat != null)
-            {
-                return View(thisTreat);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(thisTreat);
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult Edit(Treat treat, int FlavorId)
+        {
+            _db.Entry(treat).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Edit", new { id = treat.TreatId });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AddFlavor(Treat treat, int FlavorId)
         {
             if (FlavorId != 0)
             {
@@ -90,9 +93,18 @@ namespace SweetSavory.Controllers
             }
             _db.Entry(treat).State = EntityState.Modified;
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { id = treat.TreatId });
         }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult DeleteFlavor(int joinId, int treatId)
+        {
+            var joinEntry = _db.FlavorTreat.FirstOrDefault(entry => entry.FlavorTreatId == joinId);
+            _db.FlavorTreat.Remove(joinEntry);
+            _db.SaveChanges();
+            return RedirectToAction("Edit", new { id = treatId });
+        }
 
         [Authorize]
         public async Task<ActionResult> Delete(int id)
@@ -119,16 +131,6 @@ namespace SweetSavory.Controllers
             var thisTreat = _db.Treats
                 .FirstOrDefault(treats => treats.TreatId == id);
             _db.Treats.Remove(thisTreat);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        [Authorize]
-        [HttpPost]
-        public ActionResult DeleteFlavor(int joinId)
-        {
-            var joinEntry = _db.FlavorTreat.FirstOrDefault(entry => entry.FlavorTreatId == joinId);
-            _db.FlavorTreat.Remove(joinEntry);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
