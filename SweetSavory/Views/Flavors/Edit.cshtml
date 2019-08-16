@@ -15,6 +15,8 @@
         <input name="Name" type="text" class="form-control" value="@Model.Name" required>
     </div>
 
-    <input type="submit" value="Save" class="btn btn-primary"/><br><br>
-    <p>@Html.ActionLink("Cancel", "Details", new { id = Model.FlavorId })</p>
+    <input type="submit" value="Save" class="btn btn-primary"/>
 }
+<hr>
+<p>@Html.ActionLink("Delete Flavor", "Delete", new { id = Model.FlavorId })</p>
+<p>@Html.ActionLink("Cancel", "Details", new { id = Model.FlavorId })</p>
