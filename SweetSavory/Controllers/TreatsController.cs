@@ -32,7 +32,7 @@ namespace SweetSavory.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId");
+            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name");
             return View();
         }
 
@@ -52,24 +52,13 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
-        public async Task<ActionResult> Details(int id)
+        public ActionResult Details(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
             var thisTreat = _db.Treats
                 .Include(treat => treat.Flavors)
                 .ThenInclude(join => join.Flavor)
-                .Where(treat => treat.User.Id == currentUser.Id)
                 .FirstOrDefault(treat => treat.TreatId == id);
-            if (thisTreat != null)
-            {
-                return View(thisTreat);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(thisTreat);
         }
 
         [Authorize]

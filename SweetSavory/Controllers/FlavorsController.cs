@@ -47,24 +47,13 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
-        public async Task<ActionResult> Details(int id)
+        public ActionResult Details(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
             var thisFlavor = _db.Flavors
                 .Include(flavor => flavor.Treats)
                 .ThenInclude(join => join.Treat)
-                .Where(flavor => flavor.User.Id == currentUser.Id)
                 .FirstOrDefault(flavor => flavor.FlavorId == id);
-            if (thisFlavor != null)
-            {
-                return View(thisFlavor);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(thisFlavor);
         }
 
         [Authorize]
@@ -94,6 +83,7 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
