@@ -39,12 +39,13 @@ namespace SweetSavory.Controllers
                 }
                 else
                 {
+                    ViewBag.ErrorMessage = "Registration Unsuccessful. A password must include at least six characters, a capital letter, a number, and a special character. If your password meets these requirements, try registering with a different username.";
                     return View();
                 }
             }
             else
             {
-                ViewBag.PasswordNotMatch = "Passwords do not match.";
+                ViewBag.ErrorMessage = "Passwords do not match.";
                 return View();
             }
         }
