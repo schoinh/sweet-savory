@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@model RecipeBox.Models.Tag
+<h4>Edit this tag!!</h4>
+
+<h4>Edit this tag: @Html.DisplayFor(model => model.Name)</h4>
+
+@using (Html.BeginForm())
+{
+
+     @Html.HiddenFor(model => model.TagId)
+
+    @Html.LabelFor(model => model.Name)
+    @Html.TextBoxFor(model => model.Name)
+
+    <input type="submit" value="Save" class="btn btn-outline-success"/>
+}
+
+<p>@Html.ActionLink("Show all tags", "Index")</p>    
+<a class="btn btn-outline-info" href="/">Home</a>                                            

@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+
+@model RecipeBox.Models.Tag
+
+<h2>Tag Details</h2>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
+
+<p>@Html.ActionLink("Back to list", "Index")</p>
+<p>@Html.ActionLink("Edit Tag", "Edit", new { id = Model.TagId })</p>
+<p>@Html.ActionLink("Delete Tag", "Delete", new { id = Model.TagId })</p>
+<a class="btn btn-outline-info" href="/">Home</a>  

@@ -1,0 +1,30 @@
+@{
+  Layout = "_Layout";
+}
+
+@using RecipeBox.Models;
+@using System.Security.Claims;
+@model List<RecipeBox.Models.Tag>;
+
+<h2>Here is a list of your tags, @User.Identity.Name</h2>
+<hr/>
+
+@if (Model.Any())
+{
+ <ul>
+  @foreach (Tag tag in Model)
+  {
+    <li>@Html.ActionLink($"{tag.Name}", "Details", new { id = tag.TagId})</li>
+  }
+</ul>
+} 
+else
+{
+  <h3>No tags have been added yet!</h3>
+}
+
+
+
+
+<p>@Html.ActionLink("Add new Tag", "Create")</p>
+<a class="btn btn-outline-info" href="/">Home</a>  

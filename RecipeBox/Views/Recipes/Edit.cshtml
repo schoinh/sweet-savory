@@ -1,0 +1,53 @@
+@{
+    Layout = "_Layout";
+}
+
+@model RecipeBox.Models.Recipe
+
+<h2>Edit</h2>
+
+<h4>Edit this task: @Html.DisplayFor(model => model.Name)</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.RecipeId)
+
+@Html.LabelFor(model => model.Name)
+    @Html.TextBoxFor(model => model.Name)
+
+    @Html.LabelFor(model => model.Description)
+    @Html.TextBoxFor(model => model.Description)
+
+    @Html.LabelFor(model => model.Ingredients)
+    @Html.TextBoxFor(model => model.Ingredients)
+
+    @Html.LabelFor(model => model.Instructions)
+    @Html.TextBoxFor(model => model.Instructions)
+
+    @Html.LabelFor(model => model.Rating)
+     <!-- might need id of rating? -->
+     <select  name="Rating">
+         <!-- need name=rating? -->
+            <option>Select Rating</option> 
+            <!-- 1 star -->
+            <option value="1">&#127775;</option> 
+            <!-- 2 star -->
+            <option value="2">&#127775; &#127775; </option> 
+            <!-- 3 star-->
+            <option value="3">&#127775; &#127775; &#127775; </option> 
+            <!-- 4 star -->
+            <option value="4">&#127775; &#127775; &#127775; &#127775; </option> 
+            <!-- 5 star-->
+            <option value="5">&#127775; &#127775; &#127775; &#127775; &#127775;</option> 
+    </select>
+
+    
+
+    @Html.Label("Select tag")
+    @Html.DropDownList("TagId")
+
+    <input type="submit" value="Save" />
+}
+
+@Html.ActionLink("Back to List", "Index")
+<a class="btn btn-outline-info" href="/">Home</a>  
