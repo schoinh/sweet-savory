@@ -4,15 +4,14 @@
   Layout = "_Layout";
 }
 
-<h4>Add a New Flavor</h4>
-
+<h1>Add a New Flavor</h1>
+<hr>
 @using (Html.BeginForm())
 {
-    @Html.LabelFor(model => model.Name)
-    @Html.TextBoxFor(model => model.Name)
-
-    <input type="submit" value="Add Flavor" class="btn btn-outline-success"/>
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input name="Name" type="text" class="form-control" required>
+    </div>
+    <input type="submit" value="Add Flavor" class="btn btn-primary"/><br><br>
+    @Html.ActionLink("Cancel", "Index")
 }
-
-<p>@Html.ActionLink("Cancel", "Index")</p>
-<a class="btn btn-outline-info" href="/">Home</a>

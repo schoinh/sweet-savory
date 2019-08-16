@@ -1,13 +1,16 @@
 @using SweetSavory.Models;
-@using System.Security.Claims;
 @model List<SweetSavory.Models.Flavor>
 
 @{
   Layout = "_Layout";
 }
-
-<h2>Available Flavors</h2>
+<img class="headerImage" src="~/img/flavors.png">
+<h1>Flavors</h1>
 <hr/>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>@Html.ActionLink("★ New Flavor", "Create")</p>
+}
 
 @if (Model.Any())
 {
@@ -23,5 +26,4 @@ else
   <h3>No flavors have been added yet!</h3>
 }
 
-<p>@Html.ActionLink("Add New Flavor", "Create")</p>
-<a class="btn btn-outline-info" href="/">Home</a>
+<a href="/">◄ Home</a>

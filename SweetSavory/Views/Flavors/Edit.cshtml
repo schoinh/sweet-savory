@@ -4,19 +4,17 @@
   Layout = "_Layout";
 }
 
-<h4>Edit Flavor</h4>
-
-<h4>@Html.DisplayFor(model => model.Name)</h4>
-
+<h1>Edit Flavor: @Html.DisplayFor(model => model.Name)</h1>
+<hr>
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.FlavorId)
 
-    @Html.LabelFor(model => model.Name)
-    @Html.TextBoxFor(model => model.Name)
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input name="Name" type="text" class="form-control" value="@Model.Name" required>
+    </div>
 
-    <input type="submit" value="Save" class="btn btn-outline-success"/>
+    <input type="submit" value="Save" class="btn btn-primary"/><br><br>
+    <p>@Html.ActionLink("Cancel", "Details", new { id = Model.FlavorId })</p>
 }
-
-<p>@Html.ActionLink("Cancel", "Index")</p>    
-<a class="btn btn-outline-info" href="/">Home</a>                                            
