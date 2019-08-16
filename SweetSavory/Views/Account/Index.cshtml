@@ -1,10 +1,10 @@
-@{
-  Layout = "_Layout";
-}
-<!-- Do we need this semicolon? -->
 @using System.Security.Claims;
 
-<h2>Login Information</h2>
+@{
+    Layout = "_Layout";
+}
+
+<h2>Account Information</h2>
 
 <hr/>
 
@@ -19,8 +19,7 @@
 }
 else
 {
-
-    <a class="btn btn-outline-success" href="/Account/Login">Log in</a>
+    <a class="btn btn-outline-success" href="/Account/Login">Log In</a>
     <a class="btn btn-outline-warning" href="/Account/Register">Register</a>
     <a class="btn btn-outline-info" href="/">Home</a>  
 }

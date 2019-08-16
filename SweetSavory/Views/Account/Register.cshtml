@@ -1,17 +1,18 @@
+@using SweetSavory.ViewModels;
+@using Microsoft.AspNetCore.Identity;
+@model RegisterViewModel
+
 @{
   Layout = "_Layout";
 }
 
-@using SweetSavory.ViewModels
-@using Microsoft.AspNetCore.Identity
-@model RegisterViewModel
-<h2>Register a new user</h2>
+<h2>New User Registration</h2>
 
 <hr/>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post))
 {
-    <label for="UserName">User Name: </label>
+    <label for="UserName">Username: </label>
     @Html.TextBoxFor(user => user.UserName)
 
     @Html.LabelFor(user => user.Email)
@@ -23,10 +24,8 @@
      @Html.LabelFor(user=> user.ConfirmPassword)
     @Html.PasswordFor(user=> user.ConfirmPassword)
 
-
     <input type="Submit" value="Register"/>
     <a class="btn btn-outline-info" href="/">Home</a>  
 }
-
 
 <p>@ViewBag.PasswordNotMatch</p>

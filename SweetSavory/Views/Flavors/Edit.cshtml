@@ -1,16 +1,16 @@
+@model SweetSavory.Models.Flavor
+
 @{
   Layout = "_Layout";
 }
 
-@model SweetSavory.Models.Tag
-<h4>Edit this tag!!</h4>
+<h4>Edit Flavor</h4>
 
-<h4>Edit this tag: @Html.DisplayFor(model => model.Name)</h4>
+<h4>@Html.DisplayFor(model => model.Name)</h4>
 
 @using (Html.BeginForm())
 {
-
-     @Html.HiddenFor(model => model.TagId)
+    @Html.HiddenFor(model => model.FlavorId)
 
     @Html.LabelFor(model => model.Name)
     @Html.TextBoxFor(model => model.Name)
@@ -18,5 +18,5 @@
     <input type="submit" value="Save" class="btn btn-outline-success"/>
 }
 
-<p>@Html.ActionLink("Show all tags", "Index")</p>    
+<p>@Html.ActionLink("Cancel", "Index")</p>    
 <a class="btn btn-outline-info" href="/">Home</a>                                            

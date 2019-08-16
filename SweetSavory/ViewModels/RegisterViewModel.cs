@@ -6,7 +6,7 @@ namespace SweetSavory.ViewModels
     {
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "User Name")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Required]
@@ -20,8 +20,8 @@ namespace SweetSavory.ViewModels
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirm Password")]
+        // [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 }

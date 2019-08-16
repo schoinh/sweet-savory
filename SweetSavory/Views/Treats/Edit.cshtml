@@ -1,0 +1,28 @@
+@model SweetSavory.Models.Treat
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Edit</h2>
+
+<h4>@Html.DisplayFor(model => model.Name)</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.TreatId)
+
+    @Html.LabelFor(model => model.Name)
+    @Html.TextBoxFor(model => model.Name)
+
+    @Html.LabelFor(model => model.Price)
+    @Html.TextBoxFor(model => model.Price)
+    
+    @Html.Label("Select Flavor")
+    @Html.DropDownList("FlavorId")
+
+    <input type="submit" value="Save" />
+}
+
+@Html.ActionLink("Cancel", "Index")
+<a class="btn btn-outline-info" href="/">Home</a>
