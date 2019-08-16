@@ -13,7 +13,6 @@ using System.Security.Claims;
 
 namespace SweetSavory.Controllers
 {
-    [Authorize]
     public class TreatsController : Controller
     {
         private readonly SweetSavoryContext _db;
@@ -25,20 +24,19 @@ namespace SweetSavory.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
-            return View(_db.Treats
-                .Where(x => x.User.Id == currentUser.Id).ToList());
+            return View(_db.Treats.ToList());
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId");
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Create(Treat treat, int FlavorId)
         {
@@ -54,6 +52,7 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public async Task<ActionResult> Details(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -73,6 +72,7 @@ namespace SweetSavory.Controllers
             }
         }
 
+        [Authorize]
         public async Task<ActionResult> Edit(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -91,6 +91,7 @@ namespace SweetSavory.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(Treat treat, int FlavorId)
         {
@@ -103,6 +104,8 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -120,6 +123,7 @@ namespace SweetSavory.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
@@ -130,6 +134,7 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult DeleteFlavor(int joinId)
         {

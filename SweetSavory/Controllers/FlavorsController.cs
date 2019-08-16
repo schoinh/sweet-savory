@@ -13,7 +13,6 @@ using System.Security.Claims;
 
 namespace SweetSavory.Controllers
 {
-    [Authorize]
     public class FlavorsController : Controller
     {
         private readonly SweetSavoryContext _db;
@@ -25,19 +24,18 @@ namespace SweetSavory.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUser = await _userManager.FindByIdAsync(userId);
-            return View(_db.Flavors
-                .Where(x => x.User.Id == currentUser.Id).ToList());
+            return View(_db.Flavors.ToList());
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Create(Flavor flavor)
         {
@@ -49,6 +47,7 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public async Task<ActionResult> Details(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -68,6 +67,7 @@ namespace SweetSavory.Controllers
             }
         }
 
+        [Authorize]
         public async Task<ActionResult> Edit(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -85,6 +85,7 @@ namespace SweetSavory.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(Flavor flavor)
         {
@@ -110,6 +111,7 @@ namespace SweetSavory.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
