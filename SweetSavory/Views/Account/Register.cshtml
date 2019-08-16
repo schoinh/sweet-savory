@@ -12,20 +12,25 @@
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post))
 {
-    <label for="UserName">Username: </label>
-    @Html.TextBoxFor(user => user.UserName)<br>
+    <div class="form-group">
+        <label for="UserName">Username</label>
+        <input name="UserName" type="text" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input name="Email" type="text" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input name="Password" type="password" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="ConfirmPassword">Confirm Password</label>
+        <input name="ConfirmPassword" type="password" class="form-control" required>
+    </div>
 
-    @Html.LabelFor(user => user.Email)
-    @Html.TextBoxFor(user => user.Email)<br>
-
-    @Html.LabelFor(user => user.Password)
-    @Html.PasswordFor(user => user.Password)<br>
-
-     @Html.LabelFor(user=> user.ConfirmPassword)
-    @Html.PasswordFor(user=> user.ConfirmPassword)<br>
-
-    <input type="Submit" value="Register"/>
-    <a class="btn btn-outline-info" href="/">Home</a>  
+    <input type="Submit" class="btn btn-primary" value="Register"/><br><br>
+    <a href="/">Cancel</a>  
 }
-
+<br>
 <p>@ViewBag.PasswordNotMatch</p>
