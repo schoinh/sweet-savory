@@ -4,25 +4,56 @@
     Layout = "_Layout";
 }
 
-<h2>Edit</h2>
-
-<h4>@Html.DisplayFor(model => model.Name)</h4>
-
+<h1>Edit Treat: @Html.DisplayFor(model => model.Name)</h1>
+<hr>
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.TreatId)
 
-    @Html.LabelFor(model => model.Name)
-    @Html.TextBoxFor(model => model.Name)
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input name="Name" type="text" class="form-control" value="@Model.Name" required>
+    </div>
+    <div class="form-group">
+        <label for="Price">Price ($)</label>
+        <input name="Price" type="number" class="form-control" value="@Model.Price" required>
+    </div>
 
-    @Html.LabelFor(model => model.Price)
-    @Html.TextBoxFor(model => model.Price)
+    <input type="submit" class="btn btn-primary" value="Save" />
+}
+<hr>
+<h4>Current Flavors for @Model.Name:</h4>
+@if (Model.Flavors.Any())
+{
+    <ul>
+        @foreach (var join in Model.Flavors)
+        {
+            <li>
+                @using (Html.BeginForm("DeleteFlavor", "Treats", new { treatId = Model.TreatId }))
+                {
+                    @join.Flavor.Name
+                    @Html.Hidden("joinId", @join.FlavorTreatId)
+                    <input type="submit" value="Remove"/>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No Flavors</p>
+}
+<h4>Add Flavors for @Model.Name:</h4>
+@using (Html.BeginForm("AddFlavor", "Treats"))
+{
+    @Html.HiddenFor(model => model.TreatId)
+    @Html.HiddenFor(model => model.Name)
+    @Html.HiddenFor(model => model.Price)
     
-    @Html.Label("Select Flavor")
     @Html.DropDownList("FlavorId")
 
-    <input type="submit" value="Save" />
+    <input type="submit" class="btn btn-primary" value="Add" />
 }
-
-@Html.ActionLink("Cancel", "Index")
-<a class="btn btn-outline-info" href="/">Home</a>
+<hr>
+<p>@Html.ActionLink("Delete Treat", "Delete", new { id = Model.TreatId })</p>
+@Html.ActionLink("← Back", "Details", new { id = Model.TreatId })
