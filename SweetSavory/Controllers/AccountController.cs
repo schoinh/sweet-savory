@@ -66,7 +66,7 @@ namespace SweetSavory.Controllers
             _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -78,7 +78,7 @@ namespace SweetSavory.Controllers
         public async Task<ActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
