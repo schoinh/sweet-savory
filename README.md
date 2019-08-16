@@ -6,11 +6,20 @@
 
 ## Description
 
-<!-- This Web site helps a hair salon owner manage employees. The user can:
-1. See a list of all stylists
-2. Add, edit, and delete stylists
-3. Add and view clients for a specific stylist
-4. Add and view appointments for a specific stylist -->
+This Web site helps market bakery treats of different flavors. The application enables user registration and authentication with ASP.NET Core Identity.
+
+All users, whether logged in or not, can:
+1. See a list of all available treats and their prices, sorted by treat name
+2. See a list of all available flavors, sorted by flavor name
+3. Click on a specific treat name to view all flavors associated with it
+4. Click on a specific flavor to view all treats associated with it
+
+Only a logged-on user can:
+1. Create, edit, and delete treats
+2. Create, edit, and delete flavors
+3. Add and remove flavors associated with a treat.
+
+The database keeps track of which user created a flavor or treat on the Web site. However, any logged-on user can edit or delete any treat or flavor in the databse.
 
 ## Setup/Installation Requirements
 
@@ -36,10 +45,10 @@
 7. On a Web browser (Chrome recommended), navigate to http://localhost:5000
 
 ## Known Bugs
-<!-- * The list of appointments for a stylist shows the client ID for each appointment instead of the client's name. -->
+It is possible to add duplicate flavors to a treat.
 
 ## Technologies Used
-* C#
+* C# / .NET Core
 * ASP.NET Core MVC
 * Entity Framework Core
 * LINQ
