@@ -4,9 +4,16 @@
   Layout = "_Layout";
 }
 
-<h2>Flavor Details</h2>
+<h2>Flavor Page - @Model.Name</h2>
 <hr />
-<h3>@Html.DisplayFor(model => model.Name)</h3>
+
+<h4>Treats That Are @Model.Name </h4>
+<ul>
+@foreach (var join in Model.Treats)
+{
+    <li>@Html.ActionLink($"{@join.Treat.Name}", "Details", "Treats", new { id = join.Treat.TreatId })</li>
+}
+</ul>
 
 <p>@Html.ActionLink("Back", "Index")</p>
 <p>@Html.ActionLink("Edit Flavor", "Edit", new { id = Model.FlavorId })</p>
