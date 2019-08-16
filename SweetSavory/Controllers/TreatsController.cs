@@ -13,15 +13,13 @@ using System.Security.Claims;
 
 namespace SweetSavory.Controllers
 {
-
     [Authorize]
-    public class RecipesController : Controller
+    public class TreatsController : Controller
     {
-
         private readonly SweetSavoryContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public RecipesController(UserManager<ApplicationUser> userManager, SweetSavoryContext db)
+        public TreatsController(UserManager<ApplicationUser> userManager, SweetSavoryContext db)
         {
             _userManager = userManager;
             _db = db;
@@ -31,27 +29,26 @@ namespace SweetSavory.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            return View(_db.Recipes
+            return View(_db.Treats
                 .Where(x => x.User.Id == currentUser.Id).ToList());
         }
 
         public ActionResult Create()
         {
-            // Selectlist type - need DataList? Is it a thing?
-            ViewBag.TagId = new SelectList(_db.Tags, "TagId");
+            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId");
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Recipe recipe, int TagId)
+        public async Task<ActionResult> Create(Treat treat, int FlavorId)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            recipe.User = currentUser;
-            _db.Recipes.Add(recipe);
-            if (TagId != 0)
+            treat.User = currentUser;
+            _db.Treats.Add(treat);
+            if (FlavorId != 0)
             {
-                _db.TagRecipe.Add(new TagRecipe() { TagId = TagId, RecipeId = recipe.RecipeId });
+                _db.FlavorTreat.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
             }
             _db.SaveChanges();
             return RedirectToAction("Index");
@@ -61,33 +58,32 @@ namespace SweetSavory.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            var thisRecipe = _db.Recipes
-                .Include(recipe => recipe.Tags)
-                .ThenInclude(join => join.Tag)
-                .Where(recipe => recipe.User.Id == currentUser.Id)  // queries for only recipes with the current user's Id
-                .FirstOrDefault(recipe => recipe.RecipeId == id);
-            if (thisRecipe != null)
+            var thisTreat = _db.Treats
+                .Include(treat => treat.Flavors)
+                .ThenInclude(join => join.Flavor)
+                .Where(treat => treat.User.Id == currentUser.Id)
+                .FirstOrDefault(treat => treat.TreatId == id);
+            if (thisTreat != null)
             {
-                return View(thisRecipe);
+                return View(thisTreat);
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
         }
 
         public async Task<ActionResult> Edit(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            ViewBag.TagId = new SelectList(_db.Tags, "TagId", "Name");
-            var thisRecipe = _db.Recipes
+            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name");
+            var thisTreat = _db.Treats
                 .Where(r => r.User.Id == currentUser.Id)
-                .FirstOrDefault(recipes => recipes.RecipeId == id);
-            if (thisRecipe != null)
+                .FirstOrDefault(treats => treats.TreatId == id);
+            if (thisTreat != null)
             {
-                return View(thisRecipe);
+                return View(thisTreat);
             }
             else
             {
@@ -96,13 +92,13 @@ namespace SweetSavory.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Recipe recipe, int TagId)
+        public ActionResult Edit(Treat treat, int FlavorId)
         {
-            if (TagId != 0)
+            if (FlavorId != 0)
             {
-                _db.TagRecipe.Add(new TagRecipe() { TagId = TagId, RecipeId = recipe.RecipeId });
+                _db.FlavorTreat.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
             }
-            _db.Entry(recipe).State = EntityState.Modified;
+            _db.Entry(treat).State = EntityState.Modified;
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -111,12 +107,12 @@ namespace SweetSavory.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            var thisRecipe = _db.Recipes
+            var thisTreat = _db.Treats
                 .Where(r => r.User.Id == currentUser.Id)
-                .FirstOrDefault(recipes => recipes.RecipeId == id);
-            if (thisRecipe != null)
+                .FirstOrDefault(treats => treats.TreatId == id);
+            if (thisTreat != null)
             {
-                return View(thisRecipe);
+                return View(thisTreat);
             }
             else
             {
@@ -127,18 +123,18 @@ namespace SweetSavory.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var thisRecipe = _db.Recipes
-                .FirstOrDefault(recipes => recipes.RecipeId == id);
-            _db.Recipes.Remove(thisRecipe);
+            var thisTreat = _db.Treats
+                .FirstOrDefault(treats => treats.TreatId == id);
+            _db.Treats.Remove(thisTreat);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public ActionResult DeleteTag(int joinId)
+        public ActionResult DeleteFlavor(int joinId)
         {
-            var joinEntry = _db.TagRecipe.FirstOrDefault(entry => entry.TagRecipeId == joinId);
-            _db.TagRecipe.Remove(joinEntry);
+            var joinEntry = _db.FlavorTreat.FirstOrDefault(entry => entry.FlavorTreatId == joinId);
+            _db.FlavorTreat.Remove(joinEntry);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

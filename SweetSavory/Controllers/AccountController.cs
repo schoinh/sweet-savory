@@ -49,7 +49,7 @@ namespace SweetSavory.Controllers
             }
             else
             {
-                ViewBag.PasswordNotMatch = "Your passwords didn't match! Try again!";
+                ViewBag.PasswordNotMatch = "Passwords do not match.";
                 return View();
             }
         }
@@ -58,6 +58,7 @@ namespace SweetSavory.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
         {

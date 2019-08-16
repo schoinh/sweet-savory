@@ -14,12 +14,12 @@ using System.Security.Claims;
 namespace SweetSavory.Controllers
 {
     [Authorize]
-    public class TagsController : Controller
+    public class FlavorsController : Controller
     {
         private readonly SweetSavoryContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TagsController(UserManager<ApplicationUser> userManager, SweetSavoryContext db)
+        public FlavorsController(UserManager<ApplicationUser> userManager, SweetSavoryContext db)
         {
             _userManager = userManager;
             _db = db;
@@ -29,7 +29,7 @@ namespace SweetSavory.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            return View(_db.Tags
+            return View(_db.Flavors
                 .Where(x => x.User.Id == currentUser.Id).ToList());
         }
 
@@ -39,12 +39,12 @@ namespace SweetSavory.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Tag tag)
+        public async Task<ActionResult> Create(Flavor flavor)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            tag.User = currentUser;
-            _db.Tags.Add(tag);
+            flavor.User = currentUser;
+            _db.Flavors.Add(flavor);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -53,32 +53,31 @@ namespace SweetSavory.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            var thisTag = _db.Tags
-                .Include(tag => tag.Recipes)
-                .ThenInclude(join => join.Recipe)
-                .Where(tag => tag.User.Id == currentUser.Id)  // queries for only tags with the current user's Id
-                .FirstOrDefault(tag => tag.TagId == id);
-            if (thisTag != null)
+            var thisFlavor = _db.Flavors
+                .Include(flavor => flavor.Treats)
+                .ThenInclude(join => join.Treat)
+                .Where(flavor => flavor.User.Id == currentUser.Id)
+                .FirstOrDefault(flavor => flavor.FlavorId == id);
+            if (thisFlavor != null)
             {
-                return View(thisTag);
+                return View(thisFlavor);
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
         }
 
         public async Task<ActionResult> Edit(int id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            var thisTag = _db.Tags
+            var thisFlavor = _db.Flavors
                 .Where(r => r.User.Id == currentUser.Id)
-                .FirstOrDefault(tags => tags.TagId == id);
-            if (thisTag != null)
+                .FirstOrDefault(flavors => flavors.FlavorId == id);
+            if (thisFlavor != null)
             {
-                return View(thisTag);
+                return View(thisFlavor);
             }
             else
             {
@@ -87,9 +86,9 @@ namespace SweetSavory.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Tag tag)
+        public ActionResult Edit(Flavor flavor)
         {
-            _db.Entry(tag).State = EntityState.Modified;
+            _db.Entry(flavor).State = EntityState.Modified;
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -98,12 +97,12 @@ namespace SweetSavory.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            var thisTag = _db.Tags
+            var thisFlavor = _db.Flavors
                 .Where(r => r.User.Id == currentUser.Id)
-                .FirstOrDefault(tags => tags.TagId == id);
-            if (thisTag != null)
+                .FirstOrDefault(flavors => flavors.FlavorId == id);
+            if (thisFlavor != null)
             {
-                return View(thisTag);
+                return View(thisFlavor);
             }
             else
             {
@@ -114,9 +113,9 @@ namespace SweetSavory.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var thisTag = _db.Tags
-                .FirstOrDefault(tags => tags.TagId == id);
-            _db.Tags.Remove(thisTag);
+            var thisFlavor = _db.Flavors
+                .FirstOrDefault(flavors => flavors.FlavorId == id);
+            _db.Flavors.Remove(thisFlavor);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
