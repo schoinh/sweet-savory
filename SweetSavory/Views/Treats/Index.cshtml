@@ -1,20 +1,23 @@
 @using SweetSavory.Models;
-@using System.Security.Claims;
 @model List<SweetSavory.Models.Treat>
 
 @{
   Layout = "_Layout";
 }
-
-<h2>Available Treats</h2>
+<img class="headerImage" src="~/img/treats.png">
+<h1>Treats</h1>
 <hr/>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>@Html.ActionLink("★ New Treat", "Create")</p>
+}
 
 @if (Model.Any())
 {
     <ul>
     @foreach (Treat treat in Model)
     {
-        <li>@Html.ActionLink($"{treat.Name}", "Details", new { id = treat.TreatId})</li>
+        <li>@Html.ActionLink($"{treat.Name} - ${treat.Price}", "Details", new { id = treat.TreatId})</li>
     }
     </ul>
 } 
@@ -23,5 +26,4 @@ else
     <h3>No treats have been added yet!</h3>
 }
 
-<p>@Html.ActionLink("New Treat", "Create")</p>
-<a class="btn btn-outline-info" href="/">Home</a>
+<a href="/">◄ Home</a>

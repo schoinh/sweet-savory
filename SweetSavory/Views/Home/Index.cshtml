@@ -8,8 +8,18 @@
     {
         <h4>Hello <i>@User.Identity.Name</i>!</h4>
         <hr>
-        <a href="/Treats">View All Treats</a><br><br>
-        <a href="/Flavors">Available Flavors</a>
+        <p>
+            <a href="/Treats">
+                <img class="headerImage" src="~/img/treats.png"><br>
+                View / Manage Treats
+            </a>
+        </p>
+        <p>
+            <a href="/Flavors">
+                <img class="flavorImage" src="~/img/flavors.png"><br>
+                View / Manage Flavors
+            </a>
+        </p>
         <hr>
         @using (Html.BeginForm("LogOff", "Account"))
         {
@@ -19,8 +29,18 @@
     else
     {
         <hr>
-        <a href="/Treats">View All Treats</a><br><br>
-        <a href="/Flavors">Available Flavors</a>
+        <p>
+            <a href="/Treats">
+                <img class="headerImage" src="~/img/treats.png"><br>
+                View All Treats
+            </a>
+        </p>
+        <p>
+            <a href="/Flavors">
+                <img class="flavorImage" src="~/img/flavors.png"><br>
+                View All Flavors
+            </a>
+        </p>
         <hr>
         <a class="btn btn-outline-info" href="/Account/Login">Log In</a>
         <a class="btn btn-outline-info" href="/Account/Register">Register</a>
